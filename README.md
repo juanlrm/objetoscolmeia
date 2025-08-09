@@ -1,19 +1,33 @@
-local nomes = {}
-for _,obj in pairs(workspace:GetDescendants()) do
-    if string.find(obj:GetFullName(), "Hive") or string.find(obj:GetFullName(), "colmeia") then
-        table.insert(nomes, obj:GetFullName())
+local linhas = {}
+
+-- Caminho exato: Workspace.Plots.Model.Hives.[NÚMERO].HiveModel
+local hivesFolder = workspace:FindFirstChild("Plots")
+if hivesFolder and hivesFolder:FindFirstChild("Model") and hivesFolder.Model:FindFirstChild("Hives") then
+    local hives = hivesFolder.Model.Hives
+    for _,hive in ipairs(hives:GetChildren()) do
+        local hiveModel = hive:FindFirstChild("HiveModel")
+        if hiveModel then
+            table.insert(linhas, hiveModel:GetFullName() .. ":")
+            for _,child in ipairs(hiveModel:GetChildren()) do
+                table.insert(linhas, "    " .. child.Name .. " (" .. child.ClassName .. ")")
+            end
+            table.insert(linhas, "") -- linha em branco entre colmeias
+        end
     end
+else
+    table.insert(linhas, "Não foi possível encontrar Workspace.Plots.Model.Hives")
 end
 
+-- Interface copiável e editável + fechar + arrastar
 local sg = Instance.new("ScreenGui", game:GetService("CoreGui"))
-sg.Name = "ColmeiasListaSG"
+sg.Name = "FilhosHiveModelSG"
 local frame = Instance.new("Frame", sg)
 frame.Size = UDim2.new(0, 600, 0, 400)
 frame.Position = UDim2.new(0.5, -300, 0.5, -200)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BackgroundTransparency = 0.2
 frame.Active = true
-frame.Name = "ColmeiasFrame"
+frame.Name = "FilhosHiveFrame"
 
 local frameCorner = Instance.new("UICorner", frame)
 frameCorner.CornerRadius = UDim.new(0.06,0)
@@ -25,7 +39,7 @@ label.BackgroundTransparency = 1
 label.TextColor3 = Color3.fromRGB(220,30,30)
 label.TextSize = 18
 label.Font = Enum.Font.FredokaOne
-label.Text = "Lista de colmeias - copie, edite e cole!"
+label.Text = "Filhos de cada HiveModel - copie, edite e cole!"
 label.TextXAlignment = Enum.TextXAlignment.Left
 
 -- Botão de fechar
@@ -40,7 +54,6 @@ closeBtn.TextSize = 22
 closeBtn.Text = "X"
 local btnCorner = Instance.new("UICorner", closeBtn)
 btnCorner.CornerRadius = UDim.new(0.5,0)
-
 closeBtn.MouseButton1Click:Connect(function()
     sg:Destroy()
 end)
@@ -58,7 +71,7 @@ textBox.TextYAlignment = Enum.TextYAlignment.Top
 textBox.TextWrapped = true
 textBox.TextEditable = true
 textBox.MultiLine = true
-textBox.Text = table.concat(nomes, "\n")
+textBox.Text = table.concat(linhas, "\n")
 textBox.ClearTextOnFocus = false
 
 local boxCorner = Instance.new("UICorner", textBox)
