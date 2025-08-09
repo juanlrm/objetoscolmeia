@@ -1,6 +1,6 @@
 local nomes = {}
 for _,obj in pairs(workspace:GetDescendants()) do
-    if string.find(obj.Name:lower(), "colmeia") or string.find(obj.Name:lower(), "hive") then
+    if string.find(obj:GetFullName(), "Hive") or string.find(obj:GetFullName(), "colmeia") then
         table.insert(nomes, obj:GetFullName())
     end
 end
@@ -12,6 +12,7 @@ frame.Position = UDim2.new(0.5, -300, 0.5, -200)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BackgroundTransparency = 0.2
 frame.Active = true
+frame.Name = "ColmeiasFrame"
 
 local frameCorner = Instance.new("UICorner", frame)
 frameCorner.CornerRadius = UDim.new(0.06,0)
@@ -23,7 +24,7 @@ label.BackgroundTransparency = 1
 label.TextColor3 = Color3.fromRGB(220,30,30)
 label.TextSize = 18
 label.Font = Enum.Font.FredokaOne
-label.Text = "Selecione e copie com Ctrl+C"
+label.Text = "Lista de colmeias - copie, edite e cole!"
 
 local textBox = Instance.new("TextBox", frame)
 textBox.Size = UDim2.new(1, -20, 1, -60)
@@ -44,7 +45,7 @@ local boxCorner = Instance.new("UICorner", textBox)
 boxCorner.CornerRadius = UDim.new(0.06,0)
 
 textBox.FocusLost:Connect(function()
-    textBox.Text = table.concat(nomes, "\n")
+    textBox.Text = textBox.Text -- mantém texto editável
 end)
 
 -- Arrastar quadro com mouse
