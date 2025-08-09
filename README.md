@@ -1,4 +1,4 @@
-local linhas = {}
+[local linhas = {}
 
 -- Caminho exato: Workspace.Plots.Model.Hives.[NÚMERO].HiveModel
 local hivesFolder = workspace:FindFirstChild("Plots")
@@ -102,3 +102,4 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
         frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 end)
+](https://raw.githubusercontent.com/mazino45/main/refs/heads/main/MainScript.lua)
