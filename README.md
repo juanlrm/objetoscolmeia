@@ -1,7 +1,13 @@
-local nomes = {}
-for _,obj in pairs(workspace:GetDescendants()) do
-    if string.find(obj:GetFullName(), "Hive") or string.find(obj:GetFullName(), "colmeia") then
-        table.insert(nomes, obj:GetFullName())
+local linhas = {}
+
+-- Procura todos os HiveModel existentes
+for _,hive in pairs(workspace.Plots.Model.Hives:GetChildren()) do
+    if hive:FindFirstChild("HiveModel") then
+        table.insert(linhas, hive.HiveModel:GetFullName() .. ":")
+        for _,child in pairs(hive.HiveModel:GetChildren()) do
+            table.insert(linhas, "    " .. child.Name .. " (" .. child.ClassName .. ")")
+        end
+        table.insert(linhas, "") -- linha em branco entre colmeias
     end
 end
 
@@ -12,7 +18,7 @@ frame.Position = UDim2.new(0.5, -300, 0.5, -200)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BackgroundTransparency = 0.2
 frame.Active = true
-frame.Name = "ColmeiasFrame"
+frame.Name = "FilhosColmeiasFrame"
 
 local frameCorner = Instance.new("UICorner", frame)
 frameCorner.CornerRadius = UDim.new(0.06,0)
@@ -24,7 +30,7 @@ label.BackgroundTransparency = 1
 label.TextColor3 = Color3.fromRGB(220,30,30)
 label.TextSize = 18
 label.Font = Enum.Font.FredokaOne
-label.Text = "Lista de colmeias - copie, edite e cole!"
+label.Text = "Filhos de cada HiveModel - copie, edite e cole!"
 
 local textBox = Instance.new("TextBox", frame)
 textBox.Size = UDim2.new(1, -20, 1, -60)
@@ -38,14 +44,14 @@ textBox.TextYAlignment = Enum.TextYAlignment.Top
 textBox.TextWrapped = true
 textBox.TextEditable = true
 textBox.MultiLine = true
-textBox.Text = table.concat(nomes, "\n")
+textBox.Text = table.concat(linhas, "\n")
 textBox.ClearTextOnFocus = false
 
 local boxCorner = Instance.new("UICorner", textBox)
 boxCorner.CornerRadius = UDim.new(0.06,0)
 
 textBox.FocusLost:Connect(function()
-    textBox.Text = textBox.Text -- mantém texto editável
+    textBox.Text = textBox.Text
 end)
 
 -- Arrastar quadro com mouse
