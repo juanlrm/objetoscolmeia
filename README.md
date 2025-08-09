@@ -7,8 +7,8 @@ end
 
 local sg = Instance.new("ScreenGui", game:GetService("CoreGui"))
 local frame = Instance.new("Frame", sg)
-frame.Size = UDim2.new(0, 600, 0, 600)
-frame.Position = UDim2.new(0.5, -300, 0.5, -300)
+frame.Size = UDim2.new(0, 600, 0, 400)
+frame.Position = UDim2.new(0.5, -300, 0.5, -200)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BackgroundTransparency = 0.2
 frame.Active = true
@@ -16,50 +16,35 @@ frame.Active = true
 local frameCorner = Instance.new("UICorner", frame)
 frameCorner.CornerRadius = UDim.new(0.06,0)
 
-local copyBtn = Instance.new("TextButton", frame)
-copyBtn.Size = UDim2.new(0, 120, 0, 28)
-copyBtn.Position = UDim2.new(0.5, -60, 0, 10)
-copyBtn.BackgroundColor3 = Color3.fromRGB(220,30,30)
-copyBtn.TextColor3 = Color3.fromRGB(30,30,30)
-copyBtn.Font = Enum.Font.FredokaOne
-copyBtn.TextSize = 16
-copyBtn.Text = "Copiar todos"
-copyBtn.AutoButtonColor = true
-local btnCorner = Instance.new("UICorner", copyBtn)
-btnCorner.CornerRadius = UDim.new(0.25,0)
+local label = Instance.new("TextLabel", frame)
+label.Size = UDim2.new(1, 0, 0, 40)
+label.Position = UDim2.new(0, 0, 0, 0)
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.fromRGB(220,30,30)
+label.TextSize = 18
+label.Font = Enum.Font.FredokaOne
+label.Text = "Selecione e copie com Ctrl+C"
 
-local scroll = Instance.new("ScrollingFrame", frame)
-scroll.Size = UDim2.new(1, -20, 1, -50)
-scroll.Position = UDim2.new(0, 10, 0, 40)
-scroll.CanvasSize = UDim2.new(0, 0, 0, #nomes * 22)
-scroll.BackgroundTransparency = 1
-scroll.BorderSizePixel = 0
-scroll.ScrollBarThickness = 12
+local textBox = Instance.new("TextBox", frame)
+textBox.Size = UDim2.new(1, -20, 1, -60)
+textBox.Position = UDim2.new(0, 10, 0, 50)
+textBox.BackgroundColor3 = Color3.fromRGB(40,40,40)
+textBox.TextColor3 = Color3.fromRGB(220,220,220)
+textBox.TextSize = 14
+textBox.Font = Enum.Font.Code
+textBox.TextXAlignment = Enum.TextXAlignment.Left
+textBox.TextYAlignment = Enum.TextYAlignment.Top
+textBox.TextWrapped = true
+textBox.TextEditable = true
+textBox.MultiLine = true
+textBox.Text = table.concat(nomes, "\n")
+textBox.ClearTextOnFocus = false
 
-for i, nome in ipairs(nomes) do
-    local txt = Instance.new("TextLabel", scroll)
-    txt.Size = UDim2.new(1, -10, 0, 20)
-    txt.Position = UDim2.new(0, 5, 0, (i-1)*22)
-    txt.BackgroundTransparency = 1
-    txt.TextColor3 = Color3.fromRGB(220,30,30)
-    txt.TextSize = 13
-    txt.Font = Enum.Font.Code
-    txt.TextXAlignment = Enum.TextXAlignment.Left
-    txt.TextYAlignment = Enum.TextYAlignment.Top
-    txt.Text = nome
-end
+local boxCorner = Instance.new("UICorner", textBox)
+boxCorner.CornerRadius = UDim.new(0.06,0)
 
-copyBtn.MouseButton1Click:Connect(function()
-    if setclipboard then
-        setclipboard(table.concat(nomes, "\n"))
-        copyBtn.Text = "Copiado!"
-        wait(2)
-        copyBtn.Text = "Copiar todos"
-    else
-        copyBtn.Text = "Executor não suporta"
-        wait(2)
-        copyBtn.Text = "Copiar todos"
-    end
+textBox.FocusLost:Connect(function()
+    textBox.Text = table.concat(nomes, "\n")
 end)
 
 -- Arrastar quadro com mouse
